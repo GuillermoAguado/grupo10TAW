@@ -49,7 +49,7 @@
                 <%
                     for (Evento e : listaEventos) {
                         boolean filtro = false;
-                        StringJoiner etiquetas= new StringJoiner(",","[","]");
+                        StringJoiner etiquetas = new StringJoiner(",","","");
                         filtro = filtro || e.getNombre().toUpperCase().contains(buscador.toUpperCase());
                         
                         for (Etiquetas etiq : e.getEtiquetasList()) {
@@ -57,7 +57,7 @@
                             etiquetas.add(etiq.getEtiquetasPK().getEtiqueta());
                         }
                         
-                        if (filtro && e.getIdcreador().getId() == usuario.getId() || usuario.getTipousuario() == 5) {
+                        if (filtro && ( e.getIdcreador().getId() == usuario.getId() || usuario.getTipousuario() == 5)) {
                 
                 %>
                         
@@ -68,7 +68,16 @@
                     <td><%=format.format(e.getFechalimiteentradas()) %></td>
                     <td><%=e.getPrecioentrada()%></td>
                     <td><%=e.getAforo() %></td>
-                    <td><%=etiquetas.toString() %> </td>
+                    <td>
+                        <%
+                            if (e.getEtiquetasList().size() > 0) {
+                                String[] etiquetasArray = etiquetas.toString().split(",");
+                                for (String etiq : etiquetasArray) {
+                                    %><a href="" class="etiqueta"><%= etiq %></a><%
+                                }
+                            }
+                        %>
+                    </td>
                     <td><a href="EditaEventoServlet?id=<%=e.getId() %>">Editar...</a></td>
                     <td><a href="BorraEventoServlet?id=<%=e.getId() %>">Borrar...</a></td>
                     
@@ -87,6 +96,7 @@
            if (usuario.getTipousuario()==5) 
            %><a href="AdminServlet">Volver a Admin</a><%
        %>
-       
+       <a href="ConversacionesServlet">Conversaciones</a>
+       <a href="CerrarSesionServlet">Cerrar sesión</a>
     </body>
 </html>

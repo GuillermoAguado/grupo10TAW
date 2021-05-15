@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package grupo10.servlet;
 
+import grupo10.dao.ConversacionFacade;
 import grupo10.dao.EventoFacade;
 import grupo10.dao.UsuarioFacade;
+import grupo10.entity.Conversacion;
 import grupo10.entity.Evento;
 import grupo10.entity.Usuario;
+import grupo10.util.SessionUtils;
+import grupo10.util.StringUtils;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -18,19 +17,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Hielito
+ * @author dperez
  */
-@WebServlet(name = "CargaMisEventosServlet", urlPatterns = {"/CargaMisEventosServlet"})
-public class CargaMisEventosServlet extends HttpServlet {
+@WebServlet(name = "ConversacionesServlet", urlPatterns = {"/ConversacionesServlet"})
+public class ConversacionesServlet extends HttpServlet {
 
     @EJB
     private EventoFacade eventoFacade;
+
+    @EJB
+    private ConversacionFacade conversacionFacade;
+
     @EJB
     private UsuarioFacade usuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,17 +45,51 @@ public class CargaMisEventosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
-        HttpSession session = request.getSession();
-        Usuario usuario;
+        request.setCharacterEncoding("utf-8");
+        Usuario yo = SessionUtils.getUsuarioLogueado(request);
+        if (SessionUtils.puedoChatear(yo)) {
         
-        List<Evento> eventos = eventoFacade.findAll();
+            int tipo = yo.getTipousuario();
+            String filtroOtro = request.getParameter("filtroOtro");
+            String filtroEvento = request.getParameter("filtroEvento");
+            
+            List<Conversacion> conversaciones = conversacionFacade.findByUsuario(yo, filtroOtro, filtroEvento);
+            
+            List<Usuario> asistentes;
+            if (tipo == 1) {
+                asistentes = usuarioFacade.findAllCreadores();
+            } else {
+                asistentes = usuarioFacade.findAll();
+            }
+            
+            List<Evento> eventos;
+            if (tipo == 2) {
+                eventos = eventoFacade.getByCreador(yo);
+            } else {
+                eventos = eventoFacade.findAll();
+            }
+            
+            // Pasar información mediante atributos
+            request.setAttribute("conversaciones", conversaciones);
+            request.setAttribute("asistentes", asistentes);
+            request.setAttribute("eventos", eventos);
+            request.setAttribute("yo", yo);
+            request.setAttribute("filtroOtro", filtroOtro != null ? StringUtils.escaparHtml(filtroOtro) : "");
+            request.setAttribute("filtroEvento", filtroEvento != null ? StringUtils.escaparHtml(filtroEvento) : "");
+            request.setAttribute("algunFiltro", filtroOtro != null || filtroEvento != null);
+
+            // Reenviar petición al JSP
+            RequestDispatcher rd = request.getRequestDispatcher("conversaciones.jsp");
+            rd.forward(request, response);
         
-        request.setAttribute("eventos", eventos);
+        } else {
+            
+            // No autorizado, volver al login
+            SessionUtils.redirigirLogin(response);
+            
+        }
         
-        RequestDispatcher rd = request.getRequestDispatcher("misEventos.jsp");
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

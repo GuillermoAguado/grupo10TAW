@@ -1,36 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package grupo10.servlet;
 
-import grupo10.dao.EventoFacade;
+import grupo10.dao.ConversacionFacade;
 import grupo10.dao.UsuarioFacade;
-import grupo10.entity.Evento;
+import grupo10.entity.Conversacion;
 import grupo10.entity.Usuario;
+import grupo10.util.SessionUtils;
 import java.io.IOException;
-import java.util.List;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Hielito
+ * @author dperez
  */
-@WebServlet(name = "CargaMisEventosServlet", urlPatterns = {"/CargaMisEventosServlet"})
-public class CargaMisEventosServlet extends HttpServlet {
+@WebServlet(name = "BorrarConversacionServlet", urlPatterns = {"/BorrarConversacionServlet"})
+public class BorrarConversacionServlet extends HttpServlet {
 
     @EJB
-    private EventoFacade eventoFacade;
-    @EJB
     private UsuarioFacade usuarioFacade;
+
+    @EJB
+    private ConversacionFacade conversacionFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,17 +37,23 @@ public class CargaMisEventosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
-        HttpSession session = request.getSession();
-        Usuario usuario;
+        int idConversacion = -1;
+        try {
+            idConversacion = Integer.parseInt(request.getParameter("conversacion"));
+        } catch (NumberFormatException | NullPointerException ex) {
+            response.sendRedirect("ConversacionesServlet");
+        }
         
-        List<Evento> eventos = eventoFacade.findAll();
+        Usuario yo = SessionUtils.getUsuarioLogueado(request);
+        Conversacion conversacion = conversacionFacade.find(idConversacion);
         
-        request.setAttribute("eventos", eventos);
+        if (SessionUtils.pertenezcoAConversacion(yo, conversacion)) {
+            conversacionFacade.remove(conversacion);
+        }
         
-        RequestDispatcher rd = request.getRequestDispatcher("misEventos.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("ConversacionesServlet");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

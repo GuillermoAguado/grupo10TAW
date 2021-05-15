@@ -6,6 +6,7 @@
 package grupo10.dao;
 
 import grupo10.entity.Evento;
+import grupo10.entity.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,7 +15,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Fran
+ * @author dperez
  */
 @Stateless
 public class EventoFacade extends AbstractFacade<Evento> {
@@ -30,4 +31,11 @@ public class EventoFacade extends AbstractFacade<Evento> {
     public EventoFacade() {
         super(Evento.class);
     }
+    
+    public List<Evento> getByCreador(Usuario creador) {
+        Query q = em.createQuery("SELECT e FROM Evento e WHERE e.idcreador = :creador");
+        q.setParameter("creador", creador);
+        return q.getResultList();
+    }
+    
 }

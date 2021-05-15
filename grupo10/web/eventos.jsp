@@ -141,8 +141,7 @@
             </tbody>
         </table>
         <br>
-        <form action="CerrarSesionServlet">
-            <input type="submit" value="Cerrar sesión" />
-        </form>
+        <a href="ConversacionesServlet">Conversaciones</a>
+        <a href="CerrarSesionServlet">Cerrar sesión</a>
     </body>
 </html>

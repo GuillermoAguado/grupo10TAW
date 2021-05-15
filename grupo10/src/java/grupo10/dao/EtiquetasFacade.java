@@ -16,7 +16,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Usuario
+ * @author dperez
  */
 @Stateless
 public class EtiquetasFacade extends AbstractFacade<Etiquetas> {

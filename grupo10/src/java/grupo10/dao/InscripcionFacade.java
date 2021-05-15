@@ -5,9 +5,7 @@
  */
 package grupo10.dao;
 
-import grupo10.entity.Evento;
 import grupo10.entity.Inscripcion;
-import grupo10.entity.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Fran
+ * @author dperez
  */
 @Stateless
 public class InscripcionFacade extends AbstractFacade<Inscripcion> {
@@ -110,4 +108,5 @@ public class InscripcionFacade extends AbstractFacade<Inscripcion> {
             return lista;
         }
     }
+    
 }

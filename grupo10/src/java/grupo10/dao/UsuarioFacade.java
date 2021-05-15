@@ -14,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Usuario
+ * @author dperez
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {
@@ -76,4 +76,10 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return lista.get(0);
         }
     }
+    
+    public List<Usuario> findAllCreadores() {
+        Query q = em.createQuery("SELECT u FROM Usuario u WHERE u.tipousuario=2");
+        return q.getResultList();
+    }
+    
 }

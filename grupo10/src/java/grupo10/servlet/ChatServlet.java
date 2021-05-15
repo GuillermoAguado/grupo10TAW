@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package grupo10.servlet;
 
-import grupo10.dao.EventoFacade;
+import grupo10.dao.ConversacionFacade;
+import grupo10.dao.MensajeFacade;
 import grupo10.dao.UsuarioFacade;
-import grupo10.entity.Evento;
+import grupo10.entity.Conversacion;
 import grupo10.entity.Usuario;
+import grupo10.util.SessionUtils;
 import java.io.IOException;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,19 +14,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Hielito
+ * @author dperez
  */
-@WebServlet(name = "CargaMisEventosServlet", urlPatterns = {"/CargaMisEventosServlet"})
-public class CargaMisEventosServlet extends HttpServlet {
+@WebServlet(name = "ChatServlet", urlPatterns = {"/ChatServlet"})
+public class ChatServlet extends HttpServlet {
 
     @EJB
-    private EventoFacade eventoFacade;
+    private MensajeFacade mensajeFacade;
+
+    @EJB
+    private ConversacionFacade conversacionFacade;
+
     @EJB
     private UsuarioFacade usuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,17 +42,37 @@ public class CargaMisEventosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
-        HttpSession session = request.getSession();
-        Usuario usuario;
+        int idConversacion = -1;
+        try {
+            idConversacion = Integer.parseInt(request.getParameter("conversacion"));
+        } catch (NumberFormatException | NullPointerException ex) {
+            response.sendRedirect("ConversacionesServlet");
+        }
         
-        List<Evento> eventos = eventoFacade.findAll();
+        Usuario yo = SessionUtils.getUsuarioLogueado(request);
+        Conversacion conversacion = conversacionFacade.find(idConversacion);
         
-        request.setAttribute("eventos", eventos);
         
-        RequestDispatcher rd = request.getRequestDispatcher("misEventos.jsp");
-        rd.forward(request, response);
+        if (SessionUtils.pertenezcoAConversacion(yo, conversacion)) {
+            
+            Usuario otraPersona = conversacion.getIdusuario();
+            if (otraPersona.equals(yo)) {
+                otraPersona = conversacion.getIdteleoperador();
+            }
+            
+            request.setAttribute("yo", yo);
+            request.setAttribute("otro", otraPersona);
+            request.setAttribute("conversacion", conversacion);
+            request.setAttribute("mensajes", mensajeFacade.findConversacionOrdenada(conversacion));
+            
+            RequestDispatcher rd = request.getRequestDispatcher("chat.jsp");
+            rd.forward(request, response);
+            
+        } else {
+            response.sendRedirect("ConversacionesServlet");
+        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

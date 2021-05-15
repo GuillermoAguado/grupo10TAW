@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package grupo10.servlet;
+package grupo10.util;
 
-import grupo10.dao.EventoFacade;
 import grupo10.dao.UsuarioFacade;
-import grupo10.entity.Evento;
-import grupo10.entity.Usuario;
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,16 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author Hielito
+ * ESTA CLASE NO ES PARTE DE LA IMPLEMENTACIÓN FINAL.
+ * ES PARA HACER MOCK DEL LOGIN MIENTRAS NO LO TENGO.
+ * @author dperez
  */
-@WebServlet(name = "CargaMisEventosServlet", urlPatterns = {"/CargaMisEventosServlet"})
-public class CargaMisEventosServlet extends HttpServlet {
+@WebServlet(name = "LoginMockServlet", urlPatterns = {"/LoginMockServlet"})
+public class LoginMockServlet extends HttpServlet {
 
     @EJB
-    private EventoFacade eventoFacade;
-    @EJB
     private UsuarioFacade usuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,17 +34,17 @@ public class CargaMisEventosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        
+        int id = -1;
+        try {
+            id = Integer.parseInt(request.getParameter("usuario"));
+        } catch (NumberFormatException | NullPointerException ex) { }
         
         HttpSession session = request.getSession();
-        Usuario usuario;
+        session.setAttribute("usuario", usuarioFacade.find(id));
         
-        List<Evento> eventos = eventoFacade.findAll();
+        response.sendRedirect("ConversacionesServlet");
         
-        request.setAttribute("eventos", eventos);
-        
-        RequestDispatcher rd = request.getRequestDispatcher("misEventos.jsp");
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

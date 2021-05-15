@@ -38,14 +38,11 @@ public class Mensaje implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHAHORA")
+    @Column(name = "FECHAHORA", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahora;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "CONTENIDO")
+    @Column(name = "CONTENIDO", nullable = false, length = 200)
     private String contenido;
     @JoinColumn(name = "IDCONVERSACION", referencedColumnName = "ID")
     @ManyToOne(optional = false)

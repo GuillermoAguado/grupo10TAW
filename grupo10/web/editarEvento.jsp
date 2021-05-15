@@ -56,8 +56,12 @@
             Aforo: <input class="rellenar" type="text" name="aforo" value="<%= (evento!=null) ? evento.getAforo() : "" %>" />
             M&aacute;ximo de entradas por usuario: <input class="rellenar" type="text" name="maximoentradas" value="<%= (evento!=null) ? evento.getMaximoentradasusuario() : "" %>" />
             
-            Filas y columnas: <input class="rellenar" type="text" name="filas" placeholder="Sin Asignar" value="<%= (evento!=null) ? ((evento.getNfilas()<0) ? "" : evento.getNfilas()) : "" %>" />
+            Filas y columnas:<br />
+            Especifica n.&ordm; de filas y n.&ordm; de columnas o deja ambos campos vac&iacute;os.
+            <input class="rellenar" type="text" name="filas" placeholder="Sin Asignar" value="<%= (evento!=null) ? ((evento.getNfilas()<0) ? "" : evento.getNfilas()) : "" %>" />
             <input class="rellenar" type="text" name="columnas" placeholder="Sin Asignar" value="<%= (evento!=null) ? ((evento.getAsientosfila()<0) ? "" : evento.getAsientosfila()): "" %>" />
+            
+            
             Etiquetas: 
             <br/>
             <% 
