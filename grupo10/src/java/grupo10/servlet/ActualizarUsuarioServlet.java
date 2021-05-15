@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,6 +41,9 @@ public class ActualizarUsuarioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession ses;
+        ses = request.getSession();
+        Usuario admin = (Usuario) ses.getAttribute("usuario");
         String correoForm = request.getParameter("correo");
         String passForm = request.getParameter("password");
         String nombreForm = request.getParameter("nombre");
@@ -137,11 +141,25 @@ public class ActualizarUsuarioServlet extends HttpServlet {
             }else
             {
                 usuarioFacade.edit(usuarioBase);
+                
             }
 
-
-            RequestDispatcher rd = request.getRequestDispatcher("AdminServlet");
-            rd.forward(request, response);
+            if(admin.getId().equals(usuarioBase.getId()))
+            {
+                if(usuarioBase.getTipousuario() != 5)
+                {
+                    response.sendRedirect("CerrarSesionServlet");
+                }else
+                {
+                    RequestDispatcher rd = request.getRequestDispatcher("AdminServlet");
+                    rd.forward(request, response);
+                }
+            }else
+            {
+                RequestDispatcher rd = request.getRequestDispatcher("AdminServlet");
+                rd.forward(request, response);
+            }
+            
         }
     }
 

@@ -48,25 +48,27 @@ public class AdminServlet extends HttpServlet {
         HttpSession ses;
         ses = request.getSession();
         Usuario admin = (Usuario) ses.getAttribute("usuario");
-        if(admin == null)//borrar en un futuro
+        if(admin.getTipousuario() != 5)
         {
-            admin = this.usuarioFacade.findById(new Integer(1));
-            ses.setAttribute("usuario", admin);
-        }
-        List<Usuario> listaUsuarios;
-        String strBusqueda = request.getParameter("busqueda");
-        if((strBusqueda == null) || strBusqueda.equals(""))
-        {
-            listaUsuarios = this.usuarioFacade.findAll();
+            response.sendRedirect("CerrarSesionServlet");
         }else
         {
-            listaUsuarios = this.usuarioFacade.findUsuarios(strBusqueda);
+            List<Usuario> listaUsuarios;
+            String strBusqueda = request.getParameter("busqueda");
+            if((strBusqueda == null) || strBusqueda.equals(""))
+            {
+                listaUsuarios = this.usuarioFacade.findAll();
+            }else
+            {
+                listaUsuarios = this.usuarioFacade.findUsuarios(strBusqueda);
+            }
+
+            request.setAttribute("listaUsuarios", listaUsuarios);
+
+            RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
+            rd.forward(request, response);
         }
-        
-        request.setAttribute("listaUsuarios", listaUsuarios);
-        
-        RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
-        rd.forward(request, response);  
+          
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

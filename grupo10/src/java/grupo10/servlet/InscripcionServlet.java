@@ -13,6 +13,7 @@ import grupo10.entity.Inscripcion;
 import grupo10.entity.InscripcionPK;
 import grupo10.entity.Usuario;
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -69,7 +70,22 @@ public class InscripcionServlet extends HttpServlet {
             }
             if (strAsiento == null){
                 filaAsiento = -1;
-                columnaAsiento = -1;
+                List<Inscripcion> listaIns = this.inscripcionFacade.findByEventoYUsuario(Integer.parseInt(idEvento), usuario.getId());
+                if(listaIns != null && !listaIns.isEmpty()){
+                    int min = -1;
+                    int valor;
+                    for(Inscripcion ins : listaIns){
+                        valor = ins.getInscripcionPK().getColumnaasiento();
+                        if(valor < min){
+                            min = valor; 
+                        }
+                    }
+                    columnaAsiento = min-1;
+                }else{
+                    columnaAsiento = -1;
+                }
+                
+                
             } else {
                 // asientos : F;C 
                 String[] asientosProcesados = strAsiento.split(";");

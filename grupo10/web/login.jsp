@@ -27,6 +27,6 @@
         <a href="registro.jsp">¿No dispones de una cuenta?</a>
         <br/>
         <br/>
-            <h3><%= strError%><h3/>
+            <h3 style="color:#FF0000"><%= strError%><h3/>
     </body>
 </html>
