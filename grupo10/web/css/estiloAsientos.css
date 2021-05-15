@@ -1,0 +1,98 @@
+.wrap {
+  width: 300px;
+  margin: 0 auto;
+  background: white;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  border: 1px solid black;
+  margin: 5px 0;
+}
+
+td, th {
+  width: 4rem;
+  height: 2rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+a:link, a:visited {
+background-color: white;
+color: black;
+border: 2px solid green;
+padding: 10px 20px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+}
+
+tr:nth-child() {
+  background-image: url("silla.png");
+}
+
+a:hover, a:active {
+background-color: green;
+color: white;
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=password], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #83b985;
+  background-image: url("silla.png");
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:disabled {
+  width: 100%;
+  background-color: #446b46;
+  background-image: url("silla.png");
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: not-allowed;
+}
+
+input[type=submit]:hover {
+  background-color: #528554;
+  background-image: url("silla.png");
+}
+
+input[type=submit]:disabled:hover {
+  background-color: #3e6440;
+  background-image: url("silla.png");
+}
+
+div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
