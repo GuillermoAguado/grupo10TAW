@@ -23,14 +23,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author Fran
  */
 @Entity
 @Table(name = "EVENTO")
@@ -56,44 +55,33 @@ public class Evento implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", nullable=false, length=200)
     private String nombre;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "DESCRIPCION")
+    @Column(name = "DESCRIPCION", nullable=false, length=200)
     private String descripcion;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHAEVENTO")
+    @Column(name = "FECHAEVENTO", nullable=false)
     @Temporal(TemporalType.DATE)
     private Date fechaevento;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHALIMITEENTRADAS")
+    @Column(name = "FECHALIMITEENTRADAS", nullable=false)
     @Temporal(TemporalType.DATE)
     private Date fechalimiteentradas;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "PRECIOENTRADA")
+    @Column(name = "PRECIOENTRADA", nullable=false)
     private double precioentrada;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "AFORO")
+    @Column(name = "AFORO", nullable=false)
     private int aforo;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "MAXIMOENTRADASUSUARIO")
+    @Column(name = "MAXIMOENTRADASUSUARIO", nullable=false)
     private int maximoentradasusuario;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "NFILAS")
+    @Column(name = "NFILAS", nullable=false)
     private int nfilas;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ASIENTOSFILA")
+    @Column(name = "ASIENTOSFILA", nullable=false)
     private int asientosfila;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idevento")
     private List<Conversacion> conversacionList;

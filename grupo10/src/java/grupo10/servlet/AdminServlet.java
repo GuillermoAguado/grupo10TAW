@@ -50,7 +50,7 @@ public class AdminServlet extends HttpServlet {
         Usuario admin = (Usuario) ses.getAttribute("usuario");
         if(admin == null)//borrar en un futuro
         {
-            admin = this.usuarioFacade.findById(new Integer(105));
+            admin = this.usuarioFacade.findById(new Integer(1));
             ses.setAttribute("usuario", admin);
         }
         List<Usuario> listaUsuarios;

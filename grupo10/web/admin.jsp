@@ -109,7 +109,7 @@
                 <%}%>
             </table>
             <a href="EditaUsuarioServlet?idUsuario=-1">Crear un usuario</a>
-            <a href=CargaMisEventosServlet">Editar eventos</a>
+            <a href="CargaMisEventosServlet">Editar eventos</a>
 
         
     </body>
