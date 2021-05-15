@@ -60,4 +60,20 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         return resultados;
     }
     
+    public Usuario findByEmailAndPassword(String email, String contrasenia){
+        Query q;
+        List<Usuario> lista;
+        
+        q = this.em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email AND u.contrasenia = :contrasenia");
+        q.setParameter("email", email);
+        q.setParameter("contrasenia", contrasenia);
+        lista = q.getResultList();
+        
+        if (lista == null || lista.isEmpty()){
+            // No existe ese usuario
+            return null;
+        } else {
+            return lista.get(0);
+        }
+    }
 }

@@ -6,13 +6,15 @@
 package grupo10.dao;
 
 import grupo10.entity.Evento;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
- * @author Usuario
+ * @author Fran
  */
 @Stateless
 public class EventoFacade extends AbstractFacade<Evento> {
@@ -28,5 +30,4 @@ public class EventoFacade extends AbstractFacade<Evento> {
     public EventoFacade() {
         super(Evento.class);
     }
-    
 }
