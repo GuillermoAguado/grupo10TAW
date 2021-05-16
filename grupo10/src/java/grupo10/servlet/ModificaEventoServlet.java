@@ -100,6 +100,7 @@ public class ModificaEventoServlet extends HttpServlet {
             int aforo = Integer.parseInt(strAforo);
             if (aforo < 0) throw new IllegalArgumentException("El aforo debe ser positivo");
             int maximoEntradasUsuario = Integer.parseInt(strMaximoEntradasUsuario);
+            if (maximoEntradasUsuario < 0) throw new IllegalArgumentException("El maximo de entradas debe ser positivo");            
             int nFilas;
             int asientosFila;
             
@@ -129,6 +130,8 @@ public class ModificaEventoServlet extends HttpServlet {
                          evento.setAsientosfila(asientosFila);  
                     }                   
                                      
+                } else {
+                    throw new IllegalArgumentException("Las filas y columnas deben ser positivas");
                 }
 
             } else if (("").equals(strNFilas) && ("").equals(strAsientosFila)) {
