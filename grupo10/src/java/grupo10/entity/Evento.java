@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -48,6 +49,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Evento.findByAsientosfila", query = "SELECT e FROM Evento e WHERE e.asientosfila = :asientosfila")})
 public class Evento implements Serializable {
 
+    @Column(name = "NFILAS")
+    private Integer nfilas;
+    @Column(name = "ASIENTOSFILA")
+    private Integer asientosfila;
+    @ManyToMany(mappedBy = "eventoList")
+    private List<Estudiobd> estudiobdList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,12 +85,6 @@ public class Evento implements Serializable {
     @Basic(optional = false)
     @Column(name = "MAXIMOENTRADASUSUARIO", nullable=false)
     private int maximoentradasusuario;
-    @Basic(optional = false)
-    @Column(name = "NFILAS", nullable=false)
-    private int nfilas;
-    @Basic(optional = false)
-    @Column(name = "ASIENTOSFILA", nullable=false)
-    private int asientosfila;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idevento")
     private List<Conversacion> conversacionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento")
@@ -177,21 +179,6 @@ public class Evento implements Serializable {
         this.maximoentradasusuario = maximoentradasusuario;
     }
 
-    public int getNfilas() {
-        return nfilas;
-    }
-
-    public void setNfilas(int nfilas) {
-        this.nfilas = nfilas;
-    }
-
-    public int getAsientosfila() {
-        return asientosfila;
-    }
-
-    public void setAsientosfila(int asientosfila) {
-        this.asientosfila = asientosfila;
-    }
 
     @XmlTransient
     public List<Conversacion> getConversacionList() {
@@ -251,6 +238,31 @@ public class Evento implements Serializable {
     @Override
     public String toString() {
         return "grupo10.entity.Evento[ id=" + id + " ]";
+    }
+
+    public Integer getNfilas() {
+        return nfilas;
+    }
+
+    public void setNfilas(Integer nfilas) {
+        this.nfilas = nfilas;
+    }
+
+    public Integer getAsientosfila() {
+        return asientosfila;
+    }
+
+    public void setAsientosfila(Integer asientosfila) {
+        this.asientosfila = asientosfila;
+    }
+
+    @XmlTransient
+    public List<Estudiobd> getEstudiobdList() {
+        return estudiobdList;
+    }
+
+    public void setEstudiobdList(List<Estudiobd> estudiobdList) {
+        this.estudiobdList = estudiobdList;
     }
     
 }

@@ -47,19 +47,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Estudiobd.findByAforofiltro", query = "SELECT e FROM Estudiobd e WHERE e.aforofiltro = :aforofiltro")})
 public class Estudiobd implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "EDADFILTRO")
     private int edadfiltro;
     @Basic(optional = false)
@@ -86,6 +80,17 @@ public class Estudiobd implements Serializable {
     @NotNull
     @Column(name = "AFOROFILTRO")
     private int aforofiltro;
+    @Column(name = "EDADMENORQUEFILTRO")
+    private Integer edadmenorquefiltro;
+    @JoinTable(name = "PARTICIPACIONESTUDIOEVENTO", joinColumns = {@JoinColumn(name = "IDESTUDIO", referencedColumnName = "ID")}, inverseJoinColumns = {@JoinColumn(name = "IDEVENTO", referencedColumnName = "ID")})
+    @ManyToMany
+    private List<Evento> eventoList;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID")
+    private Integer id;
     @JoinTable(name = "PARTICIPACIONESTUDIO", joinColumns = {
         @JoinColumn(name = "IDESTUDIO", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "IDUSUARIO", referencedColumnName = "ID")})
@@ -119,6 +124,49 @@ public class Estudiobd implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+    @XmlTransient
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
+    }
+
+    public Usuario getIdautor() {
+        return idautor;
+    }
+
+    public void setIdautor(Usuario idautor) {
+        this.idautor = idautor;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Estudiobd)) {
+            return false;
+        }
+        Estudiobd other = (Estudiobd) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "grupo10.entity.Estudiobd[ id=" + id + " ]";
     }
 
     public String getNombre() {
@@ -177,46 +225,21 @@ public class Estudiobd implements Serializable {
         this.aforofiltro = aforofiltro;
     }
 
+    public Integer getEdadmenorquefiltro() {
+        return edadmenorquefiltro;
+    }
+
+    public void setEdadmenorquefiltro(Integer edadmenorquefiltro) {
+        this.edadmenorquefiltro = edadmenorquefiltro;
+    }
+
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public List<Evento> getEventoList() {
+        return eventoList;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
-
-    public Usuario getIdautor() {
-        return idautor;
-    }
-
-    public void setIdautor(Usuario idautor) {
-        this.idautor = idautor;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Estudiobd)) {
-            return false;
-        }
-        Estudiobd other = (Estudiobd) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "grupo10.entity.Estudiobd[ id=" + id + " ]";
+    public void setEventoList(List<Evento> eventoList) {
+        this.eventoList = eventoList;
     }
     
 }
