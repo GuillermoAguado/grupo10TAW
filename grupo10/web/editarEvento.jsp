@@ -16,6 +16,7 @@
     Evento evento = (Evento) request.getAttribute("evento");
     Usuario usuario = (Usuario) session.getAttribute("usuario");
     List<String> etiquetas = (List<String>) request.getAttribute("etiquetas");
+    String error = request.getParameter("error");
     String urlForward;
     if (evento == null) {
         urlForward = "CreaEventoServlet";
@@ -44,6 +45,15 @@
         <%
             }
         %>
+        
+        <%
+            if (error != null && error.equals("true")) {
+            %>
+        <h3 style="color:#FF0000">Hay un error en uno de los campos</h3>
+            <%
+            }
+        %>
+        
         <form action="<%= urlForward%>" method="POST">
             <input type="hidden" name="idEvento" value="<%= (evento!=null) ? evento.getId() : "" %>" />
             Creador: <input class="rellenar" type="text" name="nombrecreador" value="<%= (evento!=null) ? evento.getIdcreador().getNombre() + " " + evento.getIdcreador().getApellidos()  : usuario.getNombre() + " " + usuario.getApellidos() %>" readonly="readonly" />

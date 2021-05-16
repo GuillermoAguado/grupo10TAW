@@ -91,6 +91,7 @@ public class CreaEventoServlet extends HttpServlet {
         try {
             double precioEntrada = Double.parseDouble(strPrecioEntrada);
             int aforo = Integer.parseInt(strAforo);
+            if (aforo < 0) throw new IllegalArgumentException("El aforo debe ser positivo");
             int maximoEntradasUsuario = Integer.parseInt(strMaximoEntradasUsuario);
             int nFilas;
             int asientosFila;
@@ -122,9 +123,12 @@ public class CreaEventoServlet extends HttpServlet {
                 }
                 evento.setNfilas(nFilas);
                 evento.setAsientosfila(asientosFila);
-            } else {
+            } else if (("").equals(strNFilas) && ("").equals(strAsientosFila)) {
                 evento.setNfilas(-1);
                 evento.setAsientosfila(-1);
+            } else {
+                throw new IllegalArgumentException("Debe escribir fila y columna o ninguna");
+                
             }
             
             
@@ -148,7 +152,7 @@ public class CreaEventoServlet extends HttpServlet {
             eventoFacade.edit(evento);
             
         } catch (Exception e) {
-            RequestDispatcher rd = request.getRequestDispatcher("EditaEventoServlet");
+            RequestDispatcher rd = request.getRequestDispatcher("EditaEventoServlet?error=true");
             rd.forward(request, response);
         }
         
