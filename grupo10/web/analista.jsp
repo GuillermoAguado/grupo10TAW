@@ -61,6 +61,6 @@
                 }
                 %>
         </table>
-        
+    <a href="CerrarSesionServlet">Cerrar sesión</a>    
     </body>
 </html>
