@@ -34,7 +34,7 @@ public class EstudiobdFacade extends AbstractFacade<Estudiobd> {
         super(Estudiobd.class);
     }
     
-    
+    //No se usan estos metodos DEPRECATED
     public List<Usuario> encontrarUsuarios(Estudiobd estudio) {
        String peticion = "SELECT c FROM USUARIO c WHERE ";
        Query q;

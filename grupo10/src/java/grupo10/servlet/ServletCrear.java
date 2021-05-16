@@ -74,7 +74,7 @@ public class ServletCrear extends HttpServlet {
         Usuario usuario = this.usuarioFacade.find(id);
         estudio.setIdautor(usuario);
         List<Usuario> lista = new ArrayList<>();
-        if(edadmayor.equals("") && edadmenor.equals("") && (sexo==null || sexo=="") && ciudad.equals("")){
+        if(edadmayor.equals("") && edadmenor.equals("") && (sexo==null || sexo.equals("")) && ciudad.equals("")){
             lista=this.usuarioFacade.findAll();
         }else{
         lista = this.usuarioFacade.encontrarUsuarios(estudio);

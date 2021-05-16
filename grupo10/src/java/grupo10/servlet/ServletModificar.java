@@ -117,7 +117,11 @@ public class ServletModificar extends HttpServlet {
             
             
             List<Usuario> lista = new ArrayList<>();
-            lista=this.usuarioFacade.encontrarUsuarios(estudio);
+            if(edadmayor.equals("") && edadmenor.equals("") && (sexo==null || sexo.equals("")) && ciudad.equals("")){
+            lista=this.usuarioFacade.findAll();
+            }else{
+            lista = this.usuarioFacade.encontrarUsuarios(estudio);
+            }
             estudio.setUsuarioList(lista);
             
             
