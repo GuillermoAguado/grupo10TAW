@@ -83,7 +83,7 @@ public class ServletCrear extends HttpServlet {
         if(ciudad==null || ciudad.equals("")){
         estudio.setCiudadusuariofiltro("ninguna");
         }
-        if(sexo==null){
+        if(sexo==null || sexo.equals("")){
         estudio.setSexofiltro("N");
         }
         

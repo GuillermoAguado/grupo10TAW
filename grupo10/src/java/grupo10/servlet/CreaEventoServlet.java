@@ -93,7 +93,7 @@ public class CreaEventoServlet extends HttpServlet {
             int aforo = Integer.parseInt(strAforo);
             if (aforo < 0) throw new IllegalArgumentException("El aforo debe ser positivo");
             int maximoEntradasUsuario = Integer.parseInt(strMaximoEntradasUsuario);
-            if (maximoEntradasUsuario < 0) throw new IllegalArgumentException("El maximo de entradas debe ser positivo");
+            if (maximoEntradasUsuario < 1) throw new IllegalArgumentException("El maximo de entradas debe ser positivo");
             int nFilas;
             int asientosFila;
             
