@@ -5,7 +5,9 @@
  */
 package grupo10.dao;
 
+import grupo10.entity.Estudiobd;
 import grupo10.entity.Usuario;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -80,6 +82,55 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public List<Usuario> findAllCreadores() {
         Query q = em.createQuery("SELECT u FROM Usuario u WHERE u.tipousuario=2");
         return q.getResultList();
+    }
+    
+    public List<Usuario> encontrarUsuarios(Estudiobd estudio) {
+       String peticion = "SELECT c FROM Usuario c WHERE ";
+       Query q;
+       List<Usuario> lista = new ArrayList<>();
+       if(estudio.getEdadfiltro()>0){
+           peticion = peticion + "c.edad >= :edadmayor ";
+       }
+       if(estudio.getEdadmenorquefiltro()>0){
+           if(estudio.getEdadfiltro()>0){
+               peticion = peticion + " and ";
+           }
+           peticion = peticion + "c.edad <= :edadmenor ";
+       }
+       
+       if(estudio.getSexofiltro()!=null && estudio.getSexofiltro().length()>0){
+           if(estudio.getEdadfiltro()>0 || estudio.getEdadmenorquefiltro()>0){
+               peticion = peticion + " and ";
+           }
+           peticion = peticion + "c.sexo = :sexo ";
+       }
+       
+       if(estudio.getCiudadusuariofiltro()!=null && estudio.getCiudadusuariofiltro().length()>0){
+           if(estudio.getEdadfiltro()>0 || estudio.getEdadmenorquefiltro()>0 || estudio.getSexofiltro()!=null){
+               peticion = peticion + " and ";
+           }
+           peticion = peticion + "c.ciudadRes = :ciudad_res";
+       }
+       
+       q = this.em.createQuery(peticion);
+       if(estudio.getEdadfiltro()>0){
+           q.setParameter("edadmayor", estudio.getEdadfiltro());
+       }
+       if(estudio.getEdadmenorquefiltro()>0){
+           q.setParameter("edadmenor", estudio.getEdadmenorquefiltro());
+       }
+       if(estudio.getSexofiltro()!=null && estudio.getSexofiltro().length()>0){
+           q.setParameter("sexo", estudio.getSexofiltro());
+       }
+       if(estudio.getCiudadusuariofiltro()!=null && estudio.getCiudadusuariofiltro().length()>0){
+           q.setParameter("ciudad_res", estudio.getCiudadusuariofiltro());
+       }
+       lista=q.getResultList();
+       if(lista!=null && !lista.isEmpty()){
+           return lista;
+       }else{
+           return null;
+       }
     }
     
 }

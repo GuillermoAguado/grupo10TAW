@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author manul
  */
 @Entity
 @Table(name = "ESTUDIOBD")
@@ -47,44 +49,48 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Estudiobd.findByAforofiltro", query = "SELECT e FROM Estudiobd e WHERE e.aforofiltro = :aforofiltro")})
 public class Estudiobd implements Serializable {
 
+    @JoinTable(name = "PARTICIPACIONESTUDIOEVENTO", joinColumns = {
+        @JoinColumn(name = "IDESTUDIO", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "IDEVENTO", referencedColumnName = "ID")})
+    @ManyToMany
+    private List<Evento> eventoList;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "NOMBRE")
+    //@NotNull
+    //@Size(min = 1, max = 50)
+    @Column(name = "NOMBRE", nullable=false, length=50)
     private String nombre;
     @Basic(optional = false)
-    @NotNull()
-    @Column(name = "EDADFILTRO")
-    private int edadfiltro;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
-    @Column(name = "SEXOFILTRO")
+    //@NotNull
+    //@Size(min = 1, max = 1)
+    @Column(name = "SEXOFILTRO", nullable=false, length=1)
     private String sexofiltro;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "CIUDADUSUARIOFILTRO")
+    //@NotNull
+    //@Size(min = 1, max = 50)
+    @Column(name = "CIUDADUSUARIOFILTRO", nullable=false, length=50)
     private String ciudadusuariofiltro;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "ANYOFILTRO")
+    //@NotNull
+    //@Size(min = 1, max = 200)
+    @Column(name = "LOCALIZACIONFILTRO", nullable=false, length=200)
+    private String localizacionfiltro;
+    @Basic(optional = false)
+    //@NotNull()
+    @Column(name = "EDADFILTRO", nullable=false)
+    private int edadfiltro;
+    @Basic(optional = false)
+    //@NotNull
+    @Column(name = "ANYOFILTRO", nullable=false)
     @Temporal(TemporalType.DATE)
     private Date anyofiltro;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "LOCALIZACIONFILTRO")
-    private String localizacionfiltro;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "AFOROFILTRO")
+    //@NotNull
+    @Column(name = "AFOROFILTRO", nullable=false)
     private int aforofiltro;
-    @Column(name = "EDADMENORQUEFILTRO")
+    @Column(name = "EDADMENORQUEFILTRO", nullable=false)
     private Integer edadmenorquefiltro;
-    @JoinTable(name = "PARTICIPACIONESTUDIOEVENTO", joinColumns = {@JoinColumn(name = "IDESTUDIO", referencedColumnName = "ID")}, inverseJoinColumns = {@JoinColumn(name = "IDEVENTO", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<Evento> eventoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestudio")
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -169,13 +175,6 @@ public class Estudiobd implements Serializable {
         return "grupo10.entity.Estudiobd[ id=" + id + " ]";
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     public int getEdadfiltro() {
         return edadfiltro;
@@ -183,6 +182,40 @@ public class Estudiobd implements Serializable {
 
     public void setEdadfiltro(int edadfiltro) {
         this.edadfiltro = edadfiltro;
+    }
+
+
+    public Date getAnyofiltro() {
+        return anyofiltro;
+    }
+
+    public void setAnyofiltro(Date anyofiltro) {
+        this.anyofiltro = anyofiltro;
+    }
+
+
+    public int getAforofiltro() {
+        return aforofiltro;
+    }
+
+    public void setAforofiltro(int aforofiltro) {
+        this.aforofiltro = aforofiltro;
+    }
+
+    public Integer getEdadmenorquefiltro() {
+        return edadmenorquefiltro;
+    }
+
+    public void setEdadmenorquefiltro(Integer edadmenorquefiltro) {
+        this.edadmenorquefiltro = edadmenorquefiltro;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getSexofiltro() {
@@ -201,36 +234,12 @@ public class Estudiobd implements Serializable {
         this.ciudadusuariofiltro = ciudadusuariofiltro;
     }
 
-    public Date getAnyofiltro() {
-        return anyofiltro;
-    }
-
-    public void setAnyofiltro(Date anyofiltro) {
-        this.anyofiltro = anyofiltro;
-    }
-
     public String getLocalizacionfiltro() {
         return localizacionfiltro;
     }
 
     public void setLocalizacionfiltro(String localizacionfiltro) {
         this.localizacionfiltro = localizacionfiltro;
-    }
-
-    public int getAforofiltro() {
-        return aforofiltro;
-    }
-
-    public void setAforofiltro(int aforofiltro) {
-        this.aforofiltro = aforofiltro;
-    }
-
-    public Integer getEdadmenorquefiltro() {
-        return edadmenorquefiltro;
-    }
-
-    public void setEdadmenorquefiltro(Integer edadmenorquefiltro) {
-        this.edadmenorquefiltro = edadmenorquefiltro;
     }
 
     @XmlTransient

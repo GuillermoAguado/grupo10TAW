@@ -65,7 +65,7 @@ public class ValidarLoginServlet extends HttpServlet {
                                 break;
                     case 2 : strTo = "CargaMisEventosServlet";
                                 break;
-                    case 3 : strTo = "//Manu";
+                    case 3 : strTo = "AnalistaServletInicial";
                                 break;
                     case 4 : strTo = "ConversacionesServlet";
                                 break;
